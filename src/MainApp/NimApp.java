@@ -1,10 +1,9 @@
 package MainApp;
 
-import Graphic.*;
 import processing.core.PApplet;
 import Nim.*;
-
-import java.util.Random;
+import java.util.*;
+import Graphic.*;
 
 public class NimApp extends PApplet {
     public static void main(String[] args) {
@@ -50,13 +49,15 @@ public class NimApp extends PApplet {
     }
 
     public void mousePressed() {
-        hoveredOn = hover();
-        if (hoveredOn == null) return;
-        if (!(hoveredOn.tiles.getRow() == selectedRow || selectedRow == null)) {
-            tiles.addAll(dump(selectedTiles));
+        if (mouseButton == LEFT) {
+            hoveredOn = hover();
+            if (hoveredOn == null) return;
+            if (!(hoveredOn.tiles.getRow() == selectedRow || selectedRow == null)) {
+                tiles.addAll(dump(selectedTiles));
+            }
+            hoveredOn.toggle();
+            visualEffect();
         }
-        hoveredOn.toggle();
-        visualEffect();
     }
 
     public void keyPressed() {
