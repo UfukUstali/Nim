@@ -5,6 +5,7 @@ import Nim.*;
 import java.util.*;
 import Graphic.*;
 
+
 public class NimApp extends PApplet {
     public static void main(String[] args) {
         NimApp nimApp = new NimApp();
@@ -94,20 +95,9 @@ public class NimApp extends PApplet {
     public Tile hover() {
         if (mouseX == 0 || mouseX == WIDTH - 1 || mouseY == 0 || mouseY == HEIGHT - 1)
             return null;//TODO track mouse even when out of bounds
-        Row row = null;
-        for (var r : rows) {
-            if (r.y + r.rowHeight / 2 > mouseY) {
-                row = r;
-                break;
-            }
-        }
+        Row row = (Row) Hoverable.isHovered(rows.toArray(new Hoverable[]{}));
         if (row == null) return null;
-        for (var tile : row.getTiles()) {
-            if (tile.x + tile.tileWidth / 2 > mouseX) {
-                return tile;
-            }
-        }
-        return null;
+        return (Tile) Hoverable.isHovered(row.getTiles().toArray(new Hoverable[]{}));
     }
 
     private void visualEffect() {
@@ -168,7 +158,7 @@ public class NimApp extends PApplet {
     }
 
 
-    public class Row {
+    public class Row implements Hoverable {
         private final int x, y;
         private final float rowWidth, rowHeight;
         private Tiles tiles;
@@ -189,6 +179,11 @@ public class NimApp extends PApplet {
 
         public int getY() {
             return y;
+        }
+
+        @Override
+        public boolean isHovered() {
+            return y + rowHeight / 2 > mouseY;
         }
 
         public float getRowWidth() {
@@ -215,7 +210,7 @@ public class NimApp extends PApplet {
         }
     }
 
-    public class Tile {
+    public class Tile implements Hoverable{
         private final int x, y;
         private final float tileWidth, tileHeight, stickWidth, stickHeight;
         private static final float MAX_STICK_WIDTH = 15;
@@ -290,6 +285,11 @@ public class NimApp extends PApplet {
         private void drawStick() {
             fill(stickColor);
             rect(x, y, stickWidth, stickHeight);
+        }
+
+        @Override
+        public boolean isHovered() {
+            return x + tileWidth / 2 > mouseX;
         }
     }
 
