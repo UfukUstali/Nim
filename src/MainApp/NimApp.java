@@ -71,10 +71,10 @@ public class NimApp extends PApplet {
     }
 
     private int[] generate() {
-        int row = random.nextInt(2, 11);
-        while (row == 7 || row == 8) {
+        int row;
+        do {
             row = random.nextInt(2, 11);
-        }
+        } while (row == 7 || row == 8);
         int[] nimOf = new int[row];
         for (int i = 0; i < row; i++) {
             rows.add(new Row(WIDTH / 2, (int) (HEIGHT * ((i * 2 + 1.0f) / (row * 2))), row));
@@ -92,7 +92,7 @@ public class NimApp extends PApplet {
     }
 
     public Tile hover() {
-        if (mouseX < 5 || mouseX == WIDTH - 1 || mouseY == 0 || mouseY == HEIGHT - 1)
+        if (mouseX == 0 || mouseX == WIDTH - 1 || mouseY == 0 || mouseY == HEIGHT - 1)
             return null;//TODO track mouse even when out of bounds
         Row row = null;
         for (var r : rows) {
